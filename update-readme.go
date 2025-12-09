@@ -32,6 +32,9 @@ func findDays(root string) []string {
 }
 
 func getDayNumber(day string) string {
+	if day < "day10" {
+		return strings.TrimPrefix(day, "day0")
+	}
 	return strings.TrimPrefix(day, "day")
 }
 
@@ -130,7 +133,7 @@ func updateDayReadme(root, day string) {
 		inputSample + "\n" +
 		"```\n\n" +
 		"## Running\n\n" +
-		"cd " + day + "\n" +
+		"cd " + day + "\n\n" +
 		"go run main.go\n\n" +
 		"_Last updated: " + time.Now().Format("2006-01-02 15:04:05") + "_"
 
