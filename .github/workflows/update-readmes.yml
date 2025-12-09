@@ -6,6 +6,7 @@ on:
     paths:
       - 'day*/main.go'
       - 'day*/input'
+      - 'day*/**'
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
