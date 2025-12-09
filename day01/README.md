@@ -2,7 +2,7 @@
 
 ## Problem Overview
 
---- Day 1: Secret Entrance --- The Elves have good news and bad news. The good news is that they've discovered project management. This has given them the tools they need to prevent their usual Christmas
+--- Day 1: Secret Entrance --- The Elves have good news and bad news. The good news is that they've discovered project management. 
 
 [View full problem on Advent of Code](https://adventofcode.com/2025/day/1)
 
