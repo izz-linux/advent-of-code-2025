@@ -1,31 +1,34 @@
-name: Update READMEs
+name: Update READMEs on PR
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
     paths:
       - 'day*/main.go'
       - 'day*/input'
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
-  contents: write  # Need write permission to commit changes
+  contents: write
+  pull-requests: write
 
 jobs:
   update-readmes:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for proper git operations
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
       
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'  # Adjust to your Go version
+          go-version: '1.21'
       
       - name: Run README generator
         run: go run update-readme.go
@@ -33,7 +36,11 @@ jobs:
       - name: Check for changes
         id: git-check
         run: |
-          git diff --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
+          if git diff --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
       
       - name: Commit and push if changed
         if: steps.git-check.outputs.changes == 'true'
@@ -41,5 +48,17 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add README.md day*/README.md
-          git commit -m "docs: auto-update READMEs [skip ci]"
+          git commit -m "docs: auto-update READMEs"
           git push
+      
+      - name: Comment on PR
+        if: steps.git-check.outputs.changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ READMEs have been automatically updated!'
+            })
