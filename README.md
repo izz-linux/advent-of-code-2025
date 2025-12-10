@@ -8,6 +8,7 @@ This repository contains daily solutions organized in separate directories:
 
 - [day01](./day01)
 - [day02](./day02)
+- [day03](./day03)
 
 
 ## Quick Start
@@ -29,8 +30,9 @@ go run main.go
 |-----|--------|------|
 | 1 | ✓ Complete | [Link](./day01) |
 | 2 | ✓ Complete | [Link](./day02) |
+| 3 | ✓ Complete | [Link](./day03) |
 
 
 ---
 
-*Last updated: 2025-12-09 13:15:47*
+*Last updated: 2025-12-10 18:53:14*
